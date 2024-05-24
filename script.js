@@ -1,6 +1,8 @@
 const btnCriar = document.querySelector("#btnCriar")
 const listaFilmes = document.querySelector('#listaFilmes')
 const inputUsuario = document.querySelector('#inputUsuario')
+const inputAno = document.querySelector('#inputAno')
+const inputDiretor = document.querySelector('#inputDiretor')
 
 const filmes = [
     {
@@ -23,39 +25,10 @@ const filmes = [
 btnCriar.addEventListener('click', function (infosDoEvento){
     infosDoEvento.preventDefault();
 
-    let novoFilme = document.createElement('li')
-    novoFilme.innerText = inputUsuario.value
-    novoFilme.style.color = 'red'
-    novoFilme.classList.add('itens-lista')
-    novoFilme.classList.remove('itens-lista')
-
-    let btnEditar = document.createElement('button')
-    btnEditar.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> <span>Editar</span'
-    btnEditar.addEventListener('click', function(){
-        novoFilme.classList.toggle('esconder')
-    })
-    listaFilmes.append(btnEditar)
-
-
-
-    listaFilmes.append(novoFilme)
+    criarFilme();
 
 
 })
-
-//infosDoEvento - objeto que todo evento em JS retorna
-//infosDoEvento.target - Pega o elemento hmtl que a pessoa clicou
-//infosDoEvento.target.parentNode - Pega o pai do elemento que a pessoa clicou
-//infosDoEvento.target.parentNode.id - Pega o id do pai do elemento que a pessoa clicou
-
-
-//document.createElement('li') - cria um elemento hmtl
-//.append() - adiciona um elemento dento do outro no html
-//.style.propriedadeCSS - altera uma propriedade CSS
-//.classList.add() - adiciona uma classe
-//.classList.remove() - remove uma classe
-//.classList.toggle() - liga/desliga uma classe
-
 
 //CREATE
 function criarFilme(){
@@ -74,21 +47,44 @@ function criarFilme(){
 window.onload = renderizarNaTela()
 
 function renderizarNaTela(){
-    filmes.forEach(
+
+    listaFilmes.innerHTML = ""
+
+    filmes
+    .forEach(
         filme => {
             let novoFilme = document.createElement('li')
             novoFilme.innerHTML = `
             <h1>${filme.nome}</h1>
             <p>${filme.ano}</p>
             <h3>${filme.diretor}</h3>
-            <button> Editar </button>`
+            <button onclick="editarFilme(${filmes.indexOf(filme)})"> Editar </button>
+            <button onclick="apagarFilme(${filmes.indexOf(filme)})"> Apagar </button>`
 
 
             listaFilmes.append(novoFilme)
         }
     )
 }
-
 //UPDATE
+function editarFilme(idFilme){
+    //2 - Pegar as novas informações
+    const textoModificado = prompt('Digite o novo nome:', filmes[idFilme].nome)
+    //3 - Substituir
+    filmes[idFilme].nome = textoModificado
+    //4 - Renderizar a tela
+    renderizarNaTela()
+}
 
 //DELETE
+function apagarFilme(idFilme){
+     //2 - Apagar o filme
+     filmes.splice(idFilme, 1)
+     //3 - Atualizar na tela
+     renderizarNaTela()
+}
+
+
+
+const date = new Date()
+console.log(date)
